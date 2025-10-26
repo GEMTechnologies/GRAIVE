@@ -15,7 +15,7 @@ def process_user_request(message: str):
     is_complaint = any(indicator in message_lower for indicator in complaint_indicators)
     
     if is_question or is_complaint:
-        return {'action': 'chat', 'reason': 'question/complaint'}
+        return {'action': 'general_interaction', 'reason': 'question/complaint'}
     
     # Layer 2: DOCUMENT GENERATION FIRST (prioritize over image)
     write_keywords = ['write', 'generate', 'create', 'make me', 'essay', 'article', 'paper', 'document']
@@ -48,7 +48,7 @@ def process_user_request(message: str):
         if any(verb in message_lower for verb in ['give', 'create', 'generate', 'show']):
             return {'action': 'generate_image'}
     
-    return {'action': 'chat'}
+    return {'action': 'general_interaction'}
 
 # Test cases
 tests = [
@@ -57,8 +57,8 @@ tests = [
     ("write an article of japan with a table", "generate_document"),
     ("give me flag of japan", "generate_image"),
     ("create an image of a sunset", "generate_image"),
-    ("where is the document", "chat"),
-    ("u r lying", "chat"),
+    ("where is the document", "general_interaction"),
+    ("u r lying", "general_interaction"),
 ]
 
 print("="*70)

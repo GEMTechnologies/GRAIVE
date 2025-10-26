@@ -44,7 +44,7 @@ def process_user_request(message: str):
             'include_images': 'image' in message_lower,
             'include_tables': 'table' in message_lower
         }
-    return {'action': 'chat'}
+    return {'action': 'general_interaction'}
 
 # Test
 print("Test: 'write an essay of japan with an image and a table inside'")

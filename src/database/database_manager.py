@@ -174,7 +174,7 @@ class DatabaseManager:
         conversation_id: str,
         role: str,
         content: str,
-        message_type: str = 'chat',
+        message_type: str = 'interaction',
         metadata: Dict[str, Any] = None,
         add_embedding: bool = True
     ) -> Message:

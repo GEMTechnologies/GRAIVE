@@ -133,23 +133,25 @@ def test_document_generation():
     print("\n✅ Document generation detection PASSED")
     return True
 
-def test_chat_fallback():
-    """Test that chat still works for non-task requests"""
+def test_general_interaction():
+    """Test that general conversation routes to interaction agent"""
     print("\n" + "="*70)
-    print("TEST 7: CHAT FALLBACK")
+    print("TEST 7: GENERAL INTERACTION")
     print("="*70)
-    
+
     graive = GraiveAI(workspace="./test_workspace")
-    
+
     # Simulate regular conversation
     request = graive.process_user_request("hello, how are you?")
-    
+
     print(f"\nDetected Action: {request['action']}")
     print(f"Message: {request.get('message', 'N/A')}")
-    
-    assert request['action'] == 'chat', "Should fallback to chat"
-    
-    print("\n✅ Chat fallback PASSED")
+    print(f"Plan File: {request.get('plan_file', 'N/A')}")
+
+    assert request['action'] == 'general_interaction', "Should delegate to interaction agent"
+    assert request.get('plan_file'), "General interaction should create a plan file"
+
+    print("\n✅ General interaction routing PASSED")
     return True
 
 def main():
@@ -166,7 +168,7 @@ def main():
         ("PPT Generation", test_ppt_generation),
         ("Image Generation", test_image_generation),
         ("Document Generation", test_document_generation),
-        ("Chat Fallback", test_chat_fallback),
+        ("General Interaction", test_general_interaction),
     ]
     
     passed = 0

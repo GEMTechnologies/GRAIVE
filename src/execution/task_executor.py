@@ -36,6 +36,7 @@ class TaskExecutor:
         (self.workspace / "analysis").mkdir(parents=True, exist_ok=True)
         (self.workspace / "presentations").mkdir(parents=True, exist_ok=True)
         (self.workspace / "data").mkdir(parents=True, exist_ok=True)
+        (self.workspace / "conversations").mkdir(parents=True, exist_ok=True)
     
     def execute_task(self, task_type: str, params: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -54,14 +55,134 @@ class TaskExecutor:
             'create_presentation': self.execute_ppt_generation,
             'insert_image_in_document': self.execute_image_insertion,
             'web_scrape': self.execute_web_scraping,
-            'create_diagram': self.execute_diagram_creation
+            'create_diagram': self.execute_diagram_creation,
+            'general_interaction': self.execute_general_interaction
         }
-        
+
         executor = executors.get(task_type)
         if executor:
             return executor(params)
         else:
             return {"success": False, "error": f"Unknown task type: {task_type}"}
+
+    def execute_general_interaction(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute a general conversational interaction as an autonomous task."""
+
+        message = params.get('message', '')
+        plan_file = params.get('plan_file')
+        interaction_type = params.get('interaction_type', 'general')
+        analysis = params.get('analysis')
+        user_name = params.get('user_name')
+
+        print(f"\n{'='*70}")
+        print(f"🧠 GENERAL INTERACTION TASK")
+        print(f"{'='*70}")
+        if user_name:
+            print(f"User: {user_name}")
+        print(f"Interaction Type: {interaction_type}")
+        print(f"Plan File: {plan_file or 'N/A'}")
+        print(f"{'='*70}\n")
+
+        plan_content = None
+        if plan_file and os.path.exists(plan_file):
+            try:
+                with open(plan_file, 'r', encoding='utf-8') as pf:
+                    plan_content = pf.read()
+            except Exception as exc:
+                print(f"⚠️  Unable to read plan file: {exc}")
+
+        if plan_content:
+            print("Loaded interaction plan. Executing steps...")
+        else:
+            print("No plan file available. Proceeding with default interaction protocol.")
+
+        prompt_sections = [
+            "You are the Graive InteractionAgent responsible for completing assigned"
+            " conversational missions as autonomous tasks.",
+            "Follow the provided execution plan carefully, produce a clear, helpful"
+            " response, and summarise any next steps taken for record keeping.",
+        ]
+
+        if plan_content:
+            prompt_sections.append("Execution plan:" + "\n" + plan_content)
+        if analysis:
+            try:
+                analysis_block = json.dumps(analysis, indent=2)
+            except TypeError:
+                analysis_block = str(analysis)
+            prompt_sections.append("Intent analysis:" + "\n" + analysis_block)
+
+        prompt_sections.append(f"User message: {message}")
+        prompt_sections.append(
+            "Respond with a concise multi-sentence answer that acknowledges the"
+            " user, references the plan execution, and states any created"
+            " artefacts or follow-up actions."
+        )
+
+        prompt = "\n\n".join(prompt_sections)
+
+        response = ""
+        if self.llm_caller:
+            try:
+                response = self.llm_caller(prompt, max_tokens=600)
+            except Exception as exc:
+                print(f"⚠️  LLM caller failed: {exc}")
+
+        if not response:
+            response = (
+                "Hello! I've reviewed the interaction plan and prepared a response. "
+                "Let me know if you'd like me to take further action or escalate this"
+                " request into a more specialised workflow."
+            )
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        transcript_path = self.workspace / "conversations" / f"interaction_{timestamp}.md"
+
+        transcript_lines = [
+            "# Interaction Transcript",
+            f"- Timestamp: {datetime.now().isoformat()}",
+            f"- Interaction Type: {interaction_type}",
+            f"- Plan File: {plan_file or 'N/A'}",
+            "",
+            "## User Message",
+            message or "(none)",
+            "",
+            "## Plan Executed",
+            plan_content or "No explicit plan provided.",
+            "",
+            "## Agent Response",
+            response,
+        ]
+
+        if analysis:
+            try:
+                analysis_render = json.dumps(analysis, indent=2)
+            except TypeError:
+                analysis_render = str(analysis)
+            transcript_lines.extend([
+                "",
+                "## Reasoning Snapshot",
+                analysis_render
+            ])
+
+        try:
+            with open(transcript_path, 'w', encoding='utf-8') as transcript_file:
+                transcript_file.write("\n".join(transcript_lines))
+            print(f"📝 Transcript saved to {transcript_path}")
+        except Exception as exc:
+            print(f"⚠️  Failed to persist transcript: {exc}")
+
+        print(f"{'='*70}")
+        print("✅ Interaction completed")
+        print(f"{'='*70}\n")
+
+        return {
+            "success": True,
+            "response": response,
+            "transcript_file": str(transcript_path),
+            "plan_file": plan_file,
+            "interaction_type": interaction_type,
+        }
     
     def execute_code_generation(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """

@@ -127,7 +127,7 @@ class Message(Base):
     # Message metadata
     token_count = Column(Integer, default=0)
     importance_score = Column(Float, default=0.5)
-    message_type = Column(String(50), default='chat')  # chat, observation, error, feedback
+    message_type = Column(String(50), default='interaction')  # interaction, observation, error, feedback
     
     # Vector embedding reference
     embedding_id = Column(String(36), index=True)

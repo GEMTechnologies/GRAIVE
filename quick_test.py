@@ -70,7 +70,15 @@ def process_user_request(message: str) -> Dict[str, Any]:
             'topic': message
         }
     
-    return {'action': 'chat', 'message': message}
+    plan_path = f"plan_for_{message.lower().replace(' ', '_')}.md"
+    with open(plan_path, 'w', encoding='utf-8') as plan_file:
+        plan_file.write("# Quick Test Interaction Plan\n")
+        plan_file.write(f"- Message: {message}\n")
+        plan_file.write("- Steps:\n")
+        plan_file.write("  1. Interpret the greeting.\n")
+        plan_file.write("  2. Provide an autonomous acknowledgement.\n")
+        plan_file.write("  3. Record the exchange in transcripts.\n")
+    return {'action': 'general_interaction', 'message': message, 'plan_file': plan_path}
 
 def test_all():
     """Run all tests"""
@@ -85,7 +93,7 @@ def test_all():
         ("create a powerpoint about climate", "create_presentation", None),
         ("give me flag of japan", "generate_image", None),
         ("write an essay about AI", "generate_document", None),
-        ("hello how are you", "chat", None),
+        ("hello how are you", "general_interaction", None),
     ]
     
     passed = 0

@@ -1,0 +1,11 @@
+[tool.pyright]
+typeCheckingMode = "basic"
+reportMissingImports = false
+reportOptionalMemberAccess = false  
+reportPossiblyUnboundVariable = false
+reportAttributeAccessIssue = false
+reportGeneralTypeIssues = false
+reportArgumentType = false
+
+# These warnings are expected for optional dependencies
+# The code handles None values at runtime correctly

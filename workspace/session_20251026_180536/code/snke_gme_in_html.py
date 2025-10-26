@@ -1,0 +1,83 @@
+```python
+import random
+import pygame
+import time
+
+pygame.init()
+
+# Constants
+WIDTH, HEIGHT = 800, 600
+GRID_SIZE = 20
+BG_COLOR = (0, 0, 0)
+SNAKE_COLOR = (0, 255, 0)
+FOOD_COLOR = (255, 0, 0)
+
+# Direction vectors
+UP = (0, -1)
+DOWN = (0, 1)
+LEFT = (-1, 0)
+RIGHT = (1, 0)
+
+class SnakeGame:
+    def __init__(self):
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.clock = pygame.time.Clock()
+        self.snake = [(WIDTH // 2, HEIGHT // 2)]
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+        self.food = self.generate_food()
+
+    def generate_food(self):
+        while True:
+            food = (random.randint(0, WIDTH-GRID_SIZE)//GRID_SIZE*GRID_SIZE,
+                    random.randint(0, HEIGHT-GRID_SIZE)//GRID_SIZE*GRID_SIZE)
+            if food not in self.snake:
+                return food
+
+    def update(self):
+        head = (self.snake[0][0] + self.direction[0]*GRID_SIZE,
+                self.snake[0][1] + self.direction[1]*GRID_SIZE)
+        if head in self.snake or not (0 <= head[0] < WIDTH and 0 <= head[1] < HEIGHT):
+            raise Exception("Game Over")
+        self.snake.insert(0, head)
+        if head == self.food:
+            self.food = self.generate_food()
+        else:
+            self.snake.pop()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        for segment in self.snake:
+            pygame.draw.rect(self.screen, SNAKE_COLOR, (*segment, GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(self.screen, FOOD_COLOR, (*self.food, GRID_SIZE, GRID_SIZE))
+        pygame.display.flip()
+
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP and self.direction != DOWN:
+                        self.direction = UP
+                    elif event.key == pygame.K_DOWN and self.direction != UP:
+                        self.direction = DOWN
+                    elif event.key == pygame.K_LEFT and self.direction != RIGHT:
+                        self.direction = LEFT
+                    elif event.key == pygame.K_RIGHT and self.direction != LEFT:
+                        self.direction = RIGHT
+
+            try:
+                self.update()
+                self.draw()
+                self.clock.tick(10)
+            except Exception as e:
+                print(e)
+                running = False
+
+if __name__ == '__main__':
+    game = SnakeGame()
+    game.run()
+
+pygame.quit()
+```

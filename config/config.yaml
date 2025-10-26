@@ -1,0 +1,20 @@
+# Graive AI Configuration
+
+agent:
+  max_iterations: 100
+  timeout: 300  # seconds
+
+sandbox:
+  path: "/tmp/graive_sandbox"
+  environment: "ubuntu-22.04"
+
+tools:
+  enabled:
+    - shell
+    - file
+    - search
+    - browser
+    
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

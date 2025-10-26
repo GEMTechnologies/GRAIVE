@@ -1,0 +1,12 @@
+{
+  "sandbox_id": "graive_20251026_142512",
+  "created_at": "2025-10-26T11:25:13.005667",
+  "last_accessed": "2025-10-26T11:25:13.005694",
+  "storage_layers": [
+    "file_system",
+    "context_knowledge",
+    "database",
+    "media_cache",
+    "vector_store"
+  ]
+}

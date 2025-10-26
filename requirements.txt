@@ -1,0 +1,83 @@
+# Graive AI Requirements
+# Python 3.9+ required
+
+# Core dependencies
+
+# Database
+SQLAlchemy>=2.0.0
+psycopg2-binary>=2.9.0
+alembic>=1.12.0
+
+# Vector Database
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# LLM Providers
+openai>=1.0.0
+google-generativeai>=0.3.0
+
+# LangChain
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-google-genai>=0.0.6
+langchain-community>=0.0.20
+langchain-core>=0.1.23
+tiktoken>=0.5.0
+faiss-cpu>=1.7.4  # For vector similarity search
+
+# Document handling
+python-docx>=0.8.11
+python-pptx>=0.6.21
+fpdf2>=2.7.0
+PyPDF2>=3.0.0
+markdown>=3.5.0
+
+# Web Scraping
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+selenium>=4.15.0
+
+# Browser Automation (Advanced)
+undetected-chromedriver>=3.5.4
+selenium-stealth>=1.0.6
+webdriver-manager>=4.0.1
+
+# Data Analysis
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+openpyxl>=3.1.0
+xlrd>=2.0.1
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+
+# Image Processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+
+# Audio/Video Processing
+moviepy>=1.0.3
+pydub>=0.25.1
+speech-recognition>=3.10.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
+
+# Code quality
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+
+# Utilities
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+click>=8.1.0
+psutil>=5.9.0

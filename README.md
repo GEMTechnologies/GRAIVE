@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Graive AI - Autonomous General Intelligence
 
 Graive is an autonomous general AI agent, a sophisticated digital entity engineered to serve as a versatile and proficient collaborator in a wide array of tasks. Conceived as a Turing-complete problem solver, Graive operates through step-by-step iteration and tool-based execution within a secure, sandboxed environment.
@@ -90,3 +91,7 @@ export STABILITY_API_KEY="your-key-here"  # Optional, for Stability AI
 | **Audio** | TTS (6 voices), STT (Whisper), format conversion |
 | **Video** | Creation, editing, merging, subtitles, audio extraction |
 | **LLMs** | OpenAI, DeepSeek, Gemini with unified interface |
+=======
+# GRAIVE
+GRAIVE  is an open-source autonomous research and writing system by GEMTECH Research and Data Analysis Co. Ltd. It integrates multi-agent planning, LangChain orchestration, JSON-based structured writing, and AI-driven visualization to produce academic-grade reports, analyses, and publications.
+>>>>>>> a162c33e59cda6bd2e8e883de4b998bce4b241ad

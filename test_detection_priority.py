@@ -15,7 +15,7 @@ def process_user_request(message: str):
     is_complaint = any(indicator in message_lower for indicator in complaint_indicators)
     
     if is_question or is_complaint:
-        return {'action': 'chat', 'reason': 'question/complaint'}
+        return {'action': 'general_interaction', 'reason': 'question/complaint'}
     
     # Layer 2: Document generation with enhanced verification
     write_keywords = ['write', 'generate', 'create', 'make me', 'essay', 'article', 'paper']
@@ -47,17 +47,17 @@ def process_user_request(message: str):
     if is_image_request and any(verb in message_lower for verb in ['give', 'create', 'generate', 'make']):
         return {'action': 'generate_image'}
     
-    return {'action': 'chat', 'reason': 'default'}
+    return {'action': 'general_interaction', 'reason': 'default'}
 
 # Test cases from user's actual conversation
 tests = [
     ("create an essay about africa and put an image inside", "generate_document"),
-    ("but u never created the image", "chat"),
-    ("is the image inserted into the article or not", "chat"),
+    ("but u never created the image", "general_interaction"),
+    ("is the image inserted into the article or not", "general_interaction"),
     ("write an essay of japan with an image", "generate_document"),
     ("give me flag of japan", "generate_image"),
-    ("did you create the file", "chat"),
-    ("where is my document", "chat"),
+    ("did you create the file", "general_interaction"),
+    ("where is my document", "general_interaction"),
 ]
 
 print("="*70)

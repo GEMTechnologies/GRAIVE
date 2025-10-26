@@ -27,7 +27,8 @@ from src.planning.document_planner import (
     DocumentElement,
     SectionType,
     AgentSpecialization,
-    ElementType
+    ElementType,
+    create_document_planner
 )
 
 from src.planning.specialized_agents import (
@@ -53,6 +54,14 @@ from src.planning.document_orchestrator import (
     DocumentOrchestrator,
     InteractiveDocumentOrchestrator
 )
+from src.planning.persistent_planner import (
+    PersistentPlanner,
+    create_persistent_planner
+)
+from src.planning.request_planner import (
+    RequestReasoner,
+    create_request_reasoner
+)
 
 __all__ = [
     # Planning
@@ -63,7 +72,8 @@ __all__ = [
     "SectionType",
     "AgentSpecialization",
     "ElementType",
-    
+    "create_document_planner",
+
     # Agents
     "SpecializedAgent",
     "ResearchSynthesisAgent",
@@ -80,8 +90,16 @@ __all__ = [
     "PlacementStrategy",
     "TextReference",
     "ElementPlacementOptimizer",
-    
+
     # Orchestration
     "DocumentOrchestrator",
-    "InteractiveDocumentOrchestrator"
+    "InteractiveDocumentOrchestrator",
+
+    # Persistent planning
+    "PersistentPlanner",
+    "create_persistent_planner",
+
+    # Request reasoning
+    "RequestReasoner",
+    "create_request_reasoner",
 ]

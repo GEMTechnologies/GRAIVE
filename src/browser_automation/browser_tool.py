@@ -1,15 +1,27 @@
-"""
-Browser Automation Tool - Integration with Graive AI
+"""Browser Automation Tool - Integration with Graive AI."""
 
-Provides unified tool interface for advanced browser automation capabilities.
-"""
+from typing import Any, Dict, List, Optional
 
-from typing import Dict, List, Any, Optional
-from src.browser_automation.advanced_browser import (
-    AdvancedBrowserAutomation,
-    StealthBrowser,
-    HumanBehaviorSimulator
-)
+try:
+    from .advanced_browser import (
+        AdvancedBrowserAutomation as _AdvancedBrowserAutomation,
+        StealthBrowser as _StealthBrowser,
+        HumanBehaviorSimulator as _HumanBehaviorSimulator,
+    )
+    ADVANCED_BROWSER_AVAILABLE = True
+    BROWSER_IMPORT_ERROR = None
+except Exception as exc:  # pragma: no cover - exercised in fallback unit tests
+    from .fallback_browser import (
+        AdvancedBrowserAutomation as _AdvancedBrowserAutomation,
+        StealthBrowser as _StealthBrowser,
+        HumanBehaviorSimulator as _HumanBehaviorSimulator,
+    )
+    ADVANCED_BROWSER_AVAILABLE = False
+    BROWSER_IMPORT_ERROR = exc
+
+AdvancedBrowserAutomation = _AdvancedBrowserAutomation
+StealthBrowser = _StealthBrowser
+HumanBehaviorSimulator = _HumanBehaviorSimulator
 
 
 class BrowserAutomationTool:
